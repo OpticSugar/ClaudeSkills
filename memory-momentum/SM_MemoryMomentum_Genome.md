@@ -596,9 +596,11 @@ Context degradation is real and progressive. The full lifecycle:
 🤮 DumpAndRun — emergency dump, too late for clean LastCall
 ```
 
-**IMPORTANT: The battery meaning is INVERTED from normal usage.** 🪫 (low battery) = GOOD (lots of context room). 🔋 (full battery) = BAD (context overflowing). Stu's rationale: *"When the context gets full, it looks like this: 🔋 which results in 🤢 then 🤮... it's all green!"* The green color of the full battery matches the green of the nausea/vomit emojis. The visual metaphor is: green goo filling up and overflowing.
+The icons are intuitive when seen as containers rather than batteries: 🪫 is an empty glass — plenty of room. 🔋 is a full green glass — about to overflow. And when the green overflows? 🤢 → 🤮. The color is consistent all the way through. Stu's rationale: *"When the context gets full, it looks like this: 🔋 which results in 🤢 then 🤮... it's all green!"*
 
-**This was validated in real-time:** During the v0.3 forensic analysis session, the analyst Claude accidentally inverted the battery meanings (said 🔋 = good, 🪫 = bad) toward the end of the session. Stu caught it immediately, calling it "a clear sign 🤢" — proving the SobrietyCheck concept works by literally demonstrating context degradation in the act of describing it.
+**Important for agents:** Don't think of these as battery icons with inverted meanings. Think of them as what they look like — an empty container and a full container. There's nothing to "invert" if you stop calling them batteries.
+
+**This was validated in real-time:** During the v0.3 forensic analysis session, the analyst Claude — thinking of them as batteries — accidentally swapped the meanings (said 🔋 = good, 🪫 = bad) toward the end of the session. Stu caught it immediately, calling it "a clear sign 🤢" — proving the SobrietyCheck concept works by literally demonstrating context degradation in the act of describing it. The confusion itself was caused by the "battery" framing. Drop the battery concept and the confusion disappears.
 
 ### 🪫 SobrietyCheck
 
@@ -656,7 +658,7 @@ The agent doing LastCall is often the LEAST capable version of itself in the ent
 
 **Name origin:** The analyst Claude initially proposed a clinical name and added "(I'm workshopping that name, obviously)." Stu's response was immediate and emphatic: *"🤮 DumpAndRun is P E R F E C T! in every single way. Don't you DARE change it!"* The official name is 🤮 DumpAndRun. The shorthand DAR is acceptable for brevity. Both are canonical. And for the record, the first DumpAndRun in the wild happened during the very session that produced its specification. As Stu described it: "Ate alphabet soup, barfed a bestseller." [^15]
 
-[^15]: The first DAR was historically significant — the analyst Claude that produced the v0.3 upgrade spec was itself suffering from context degradation by the end of the session (as demonstrated by the inverted battery emoji incident). It performed a 🤮 DumpAndRun to capture the remaining context before the thread ended. The irony of needing the emergency protocol during the session that invented it was not lost on anyone.
+[^15]: The first DAR was historically significant — the analyst Claude that produced the v0.3 upgrade spec was itself suffering from context degradation by the end of the session (as demonstrated by the swapped context indicator incident). It performed a 🤮 DumpAndRun to capture the remaining context before the thread ended. The irony of needing the emergency protocol during the session that invented it was not lost on anyone.
 
 ---
 
@@ -903,8 +905,8 @@ These emojis are **owned** by MemoryMomentum mechanisms and should be used consi
 | 🧹 | ShelfSweep | Shelf cleanup sub-ritual of LastCall |
 | 🤢 | Nausea | Context degradation warning (from agent) |
 | 🤮 | DumpAndRun (DAR) | Emergency context dump (from agent) |
-| 🪫 | SobrietyCheck / context OK | Low battery = empty context = good |
-| 🔋 | Context full / danger | Full battery = full context = bad |
+| 🪫 | SobrietyCheck / context OK | Empty container — plenty of room |
+| 🔋 | Context full / danger | Full green container — about to overflow |
 | 🔧 | MaintenancePass | Dedicated cleanup thread |
 | 🧬 | Genome / TemplateEvolution | Complete skill reference / self-aware spawning |
 | ⚡️ | Rebirth Arrival | Fork arrival signal (with 💾) |

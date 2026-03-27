@@ -492,10 +492,9 @@ Context degradation is real and progressive. The full lifecycle:
 🤮 DumpAndRun — emergency dump, too late for clean LastCall
 ```
 
-**IMPORTANT: The battery meaning is INVERTED from normal usage.** 🪫 (low battery) =
-GOOD (lots of context room). 🔋 (full battery) = BAD (context overflowing). The visual
-metaphor: when the context gets full 🔋, the green stuff overflows → 🤢 → 🤮. It's all
-green. The color is consistent.
+The icons are intuitive if you see them as containers, not batteries: 🪫 is an empty
+glass — plenty of room. 🔋 is a full green glass — about to overflow. And when the green
+overflows? 🤢 → 🤮. The color is consistent all the way through.
 
 ### 🪫 SobrietyCheck
 
@@ -786,8 +785,8 @@ Canonical reference for all emoji signals. When in doubt, consult this table.
 
 | Indicator | Context State | Action |
 |-----------|--------------|--------|
-| 🪫 | Empty context = GOOD | Fresh, sharp — full runway ahead |
-| 🔋 | Full context = BAD | Filling up — SobrietyCheck time |
+| 🪫 | Empty context — plenty of room | Fresh, sharp — full runway ahead |
+| 🔋 | Full context — overflowing | Filling up — SobrietyCheck time |
 | 🤢 | Queasy | Toast immediately, warn user |
 | 🍺 | LastCall territory | Clean wrap-up while still coherent |
 | 🤮 | DumpAndRun territory | Emergency dump, mop duty for next agent |
