@@ -596,11 +596,9 @@ Context degradation is real and progressive. The full lifecycle:
 🤮 DumpAndRun — emergency dump, too late for clean LastCall
 ```
 
-The icons are intuitive when seen as containers rather than batteries: 🪫 is an empty glass — plenty of room. 🔋 is a full green glass — about to overflow. And when the green overflows? 🤢 → 🤮. The color is consistent all the way through. Stu's rationale: *"When the context gets full, it looks like this: 🔋 which results in 🤢 then 🤮... it's all green!"*
+When the green overflows: 🔋 → 🤢 → 🤮. The color is consistent all the way through. The labels next to each icon do all the work — no further explanation needed.
 
-**Important for agents:** Don't think of these as battery icons with inverted meanings. Think of them as what they look like — an empty container and a full container. There's nothing to "invert" if you stop calling them batteries.
-
-**This was validated in real-time:** During the v0.3 forensic analysis session, the analyst Claude — thinking of them as batteries — accidentally swapped the meanings (said 🔋 = good, 🪫 = bad) toward the end of the session. Stu caught it immediately, calling it "a clear sign 🤢" — proving the SobrietyCheck concept works by literally demonstrating context degradation in the act of describing it. The confusion itself was caused by the "battery" framing. Drop the battery concept and the confusion disappears.
+**Validated in real-time:** During the v0.3 forensic analysis session, the analyst Claude accidentally swapped the meanings of 🔋 and 🪫 toward the end of the session. Stu caught it immediately, calling it "a clear sign 🤢" — proving the 🪫 SobrietyCheck concept works by literally demonstrating context degradation in the act of describing it.
 
 ### 🪫 SobrietyCheck
 

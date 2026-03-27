@@ -492,9 +492,7 @@ Context degradation is real and progressive. The full lifecycle:
 🤮 DumpAndRun — emergency dump, too late for clean LastCall
 ```
 
-The icons are intuitive if you see them as containers, not batteries: 🪫 is an empty
-glass — plenty of room. 🔋 is a full green glass — about to overflow. And when the green
-overflows? 🤢 → 🤮. The color is consistent all the way through.
+When the green overflows: 🔋 → 🤢 → 🤮. The color is consistent all the way through.
 
 ### 🪫 SobrietyCheck
 
