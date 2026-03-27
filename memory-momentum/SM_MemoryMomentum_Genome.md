@@ -69,9 +69,11 @@ The document it produces: **🪢 MeMo** (in conversation and in-document).
 
 ### Branding History (For the Record)
 
-All of these names refer to the same system:
+All of these names refer to the same system, in evolutionary order:
 
-- **🛜 CanonCanvas** — the ChatGPT module name (retired)
+- **📚 Memory Library System** — the original (GPT, May 2025, "Grey Matter Labs" era)
+- **🧵 ThreadOS** — second iteration (GPT, pre-CanonCanvas)
+- **🛜 CanonCanvas** — the mature ChatGPT module name (retired)
 - **🚗 The DeLorean Protocol** — the fun analogy name from Stu's first Claude session (retired with love)
 - **📔 The Almanac / The Sports Almanac** — the document name under DeLorean branding (retired)
 - **🪢 MemoryMomentum** — the final, unified skill name
