@@ -28,8 +28,20 @@ Each deliverable gets its own WorkPiece file — a VHS tape. Pull it off The She
 you need it, pop it in, work on it, put it back when done. Completed tapes don't consume
 context in future threads.
 
+**WorkPieces are PERMANENT per-piece archives.** When a shot is done, the tape goes back
+on the shelf — it doesn't get thrown away. The client may have revisions. You may need to
+revisit the iteration history. A completed WP is always valid unless the piece is killed
+or fundamentally transformed.
+
 **File pattern:** `MM_[ShowEp]_WP_[ID]_[Name].md`
-**Example:** `MM_PW01_WP_400_HerbMorrison.md`
+**With assembly grouping:** `MM_[ShowEp]_[Assembly]_WP_[ID]_[Name].md`
+
+**Examples:**
+```
+MM_PW01_WP_400_HerbMorrison.md        ← standalone WP
+MM_PW01_DkRm_WP_Sh332_Timer.md        ← WP in DarkRoom assembly
+MM_PW01_DkRm_WP_Sh333_Profile.md      ← WP in DarkRoom assembly
+```
 
 ### Standard WP Headers for Production
 
@@ -79,6 +91,52 @@ needed. Unread sections never enter context and cost zero tokens.
 `## 📝 Master Prompt`, note the line range, load only those lines.
 
 
+## ⛈️ BrainStorm — PlanPass for Production
+
+Production workflows often involve batch exploration rounds before individual shots get
+locked and assigned real numbers. This is the ⛈️ BrainStorm flavor of 💡 PlanPass.
+
+**The workflow:**
+1. Describe a whole sequence concept (~15 shots) to Claude
+2. Claude writes a batch of prompts
+3. Prompts render as a contact sheet (via Weavy or similar)
+4. Review the contact sheet, leave comments, note failures
+5. Iterate — new round, new batch of prompts
+6. Occasionally a specific image is pulled out as a usable shot
+7. Repeat until individual shots are locked with real shot numbers
+8. Locked shots graduate to their own 📼 WorkPiece files
+
+**BrainStorm PlanPasses are NOT WorkPieces.** They are the *thinking before the building*
+— iterating on plans, not building furniture. Each version is a complete batch round.
+
+**File pattern:** `MM_[ShowEp]_[Assembly]_PP_v[N].md`
+**Example:** `MM_PW01_DkRm_PP_v4.md`
+
+### 🎯 CreativeDirectives
+
+Each BrainStorm version carries a `## 🎯 CreativeDirectives` section at the top with
+accumulated creative direction from all prior rounds. When rolling to a new version:
+- Merge all feedback from the expiring version into CreativeDirectives
+- Preserve the user's voice — clean up rambling but keep enthusiasm and frustrations
+- Prune anything obsolete (killed directions, abandoned approaches)
+- The new version carries the FULL intelligence of every previous round in one section
+
+### Assembly Grouping
+
+A production project can have multiple sequences, each with its own BrainStorm PlanPass
+and graduated WorkPieces. The assembly code groups them on the flat shelf:
+
+```
+MM_PW01_DkRm_PP_v4.md              ← DarkRoom BrainStorm (current)
+_MM_PW01_DkRm_PP_v3.md             ← DarkRoom BrainStorm (archived)
+MM_PW01_DkRm_WP_Sh332_Timer.md     ← graduated from DarkRoom
+MM_PW01_DkRm_WP_Sh333_Profile.md   ← graduated from DarkRoom
+MM_PW01_Wreck_PP_v1.md             ← Wreckage BrainStorm (different assembly)
+```
+
+Standalone shots that aren't part of any sequence omit the assembly code.
+
+
 ## Production ProjectBrain Patterns
 
 The ProjectBrain for a production project typically includes:
@@ -86,7 +144,7 @@ The ProjectBrain for a production project typically includes:
 - **🎬 Project Overview** — what we're making, for whom, the creative brief
 - **🧱 Pipeline Architecture** — which models, which tools, general workflow
 - **🎯 Creative Direction** — overarching visual philosophy, tone, constraints
-- **📋 Shot Index** — table of all WPs, their status, and file paths
+- **📋 Shot Index** — table of all WPs and PPs, their status, and file paths
 - **⚠️ Known Landmines** — things that consistently cause problems across shots
 - **🔧 Workflow Notes** — tool configurations, pipeline settings, preferences
 
@@ -97,8 +155,10 @@ The Shot Index is particularly important — it's the map of all tapes on The Sh
 
 | Shot | Name | Status | File |
 |------|------|--------|------|
+| — | DarkRoom Sequence | ⛈️ BrainStorm v4, 2 shots graduated | MM_PW01_DkRm_PP_v4.md |
 | 250 | The Discovery | Boards approved, video pending | MM_PW01_WP_250_Discovery.md |
 | 320 | Sam Shere | v2 prompt, bake-off pending | MM_PW01_WP_320_SamShere.md |
+| 332 | Timer Close-up | Graduated from DkRm PP | MM_PW01_DkRm_WP_Sh332_Timer.md |
 | 400 | Herb Morrison | APPROVED (Kling 3) | MM_PW01_WP_400_Morrison.md |
 ```
 
@@ -127,17 +187,32 @@ Shot-specific facts that only matter for that one deliverable:
 ### Flag and Keep Moving
 
 Flag with 🌲 right in the WP where the discovery occurs. Add a skill-flavor emoji
-if you know the destination (🌲📹 for VideoPrompting, 🌲🎬 for production pipeline).
-Don't stop to evaluate. Don't promote yet. Evaluation happens at 🍺 LastCall.
+if you know the destination (🌲📹 for VideoPrompting, 🌲🖼️ for ImagePrompting,
+🌲🎬 for production pipeline). Don't stop to evaluate. Don't promote yet. Evaluation
+happens at 🍺 LastCall.
+
+**At LastCall, ROUTE all harvested items** to their destination `MM_[Skill]_Upgrades.md`
+files. Don't leave lumber on the forest floor.
 
 
 ## Loading Sequences
 
-### Standard Thread Jump (within a session)
+### ⚡ Rebirth Arrival (thread fork)
+
+```
+1. See 💾 + ⚡️ on their own lines → you are a reborn agent
+2. Check The Shelf for the SessionJournal
+3. Read ⛲️ RebirthManifest FIRST — follow the read list exactly
+4. Load only the WP(s) and PP(s) specified
+5. Begin work per the 🎯 Mission
+6. Do NOT load files on the 🚫 Skip list
+```
+
+### Standard Thread Jump (within a session, no ⚡)
 
 ```
 1. Skill is already loaded (always enabled)
-2. Check The Shelf — read ProjectBrain
+2. Check The Shelf — read ⛲️ RebirthManifest if it exists, otherwise read PB
 3. Read SessionJournal 🏃‍♂️ MomentumNote
 4. Load the WP(s) specified by the MomentumNote
 5. Begin work
@@ -148,10 +223,9 @@ Don't stop to evaluate. Don't promote yet. Evaluation happens at 🍺 LastCall.
 ```
 1. Skill loads automatically
 2. User specifies what to work on (or says "check The Shelf")
-3. Read ProjectBrain from The Shelf
-4. If SessionJournal exists, read the 🏃‍♂️ MomentumNote
-5. Load relevant WP(s)
-6. Begin work
+3. Read ⛲️ RebirthManifest if SJ exists, otherwise read PB
+4. Load relevant WP(s) and PP(s)
+5. Begin work
 ```
 
 ### Minimum Viable Resume Kit
