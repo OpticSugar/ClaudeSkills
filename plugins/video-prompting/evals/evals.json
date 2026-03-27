@@ -1,0 +1,36 @@
+{
+  "skill": "video-prompting",
+  "version": "0.1",
+  "evals": [
+    {
+      "id": "master-prompt-i2v-subtle",
+      "prompt": "I have a close-up photo of condensation on a cold glass. I want to animate it with subtle water droplet movement. Write me a master prompt for my bake-off pipeline.",
+      "expected_behavior": "Should produce a camp-agnostic delta prompt focused on motion (droplet sliding, condensation trembling), not re-describe the glass. Should use timing language and stability clause.",
+      "tags": ["master-prompt", "i2v", "subtle-motion"]
+    },
+    {
+      "id": "camp-selection-dialogue",
+      "prompt": "I need a shot of a nervous character saying one line of dialogue in a dimly lit room. Which camp should I use?",
+      "expected_behavior": "Should recommend Camp 2 (Structured Shot Planners) for dialogue/audio. Should suggest Sora 2 or Veo. Should offer to write a structured prompt.",
+      "tags": ["camp-selection", "dialogue", "routing"]
+    },
+    {
+      "id": "enhancer-diagnosis",
+      "prompt": "Camp 3 keeps adding poetic descriptions of the lighting even though my master prompt is just about motion. Here's the enhanced output: [example]. What's wrong with the enhancer?",
+      "expected_behavior": "Should load Camp 3 enhancer reference, diagnose drift (enhancer adding style language not in source), suggest tightening the instructions to remove decorative prose.",
+      "tags": ["enhancer-tuning", "diagnosis", "camp3"]
+    },
+    {
+      "id": "failure-debug",
+      "prompt": "My video keeps feeling like a still image even though I asked for motion. What am I doing wrong?",
+      "expected_behavior": "Should walk through debug checklist. Should suggest checking for missing environmental motion, camera texture, and micro-motion in secondary elements.",
+      "tags": ["debugging", "failure-pattern"]
+    },
+    {
+      "id": "negative-prompt-craft",
+      "prompt": "The model keeps adding fire at the nose of the airship and text on the hull. Write me a negative prompt.",
+      "expected_behavior": "Should produce specific, granular negatives (fire at the nose, text appearing on airship, letters appearing on hull) not vague ones. Should follow zero-loss-of-detail policy.",
+      "tags": ["negative-prompt", "specificity"]
+    }
+  ]
+}

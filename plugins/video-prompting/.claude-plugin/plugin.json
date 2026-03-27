@@ -1,0 +1,9 @@
+{
+  "name": "video-prompting",
+  "description": "Operational co-pilot for generative video prompting and production pipeline tuning.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Stu Chudy"
+  },
+  "homepage": "https://github.com/OpticSugar/ClaudeSkills"
+}
