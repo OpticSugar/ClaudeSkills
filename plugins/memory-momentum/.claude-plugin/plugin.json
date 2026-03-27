@@ -1,0 +1,9 @@
+{
+  "name": "memory-momentum",
+  "description": "Self-managed project memory, session lifecycle, and knowledge harvesting system for Claude Code.",
+  "version": "0.2.0",
+  "author": {
+    "name": "Stu Chudy"
+  },
+  "homepage": "https://github.com/OpticSugar/ClaudeSkills"
+}
