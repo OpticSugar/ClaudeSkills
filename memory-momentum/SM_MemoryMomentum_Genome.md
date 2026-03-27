@@ -1,5 +1,5 @@
 # 🧬 MemoryMomentum — Genome
-### Complete Skill Reference | v0.2 | Last Updated: March 24, 2026
+### Complete Skill Reference | v0.3 | Last Updated: March 26, 2026
 
 ---
 
@@ -85,7 +85,7 @@ If a user or developer references any of these names, they all point to the same
 
 ## 🧭 Core Philosophy
 
-These seven principles are the **bones** of MemoryMomentum — the universal truths that survived the port from ChatGPT and apply regardless of platform, project type, or implementation. They are always active. No exceptions.
+These eight principles are the **bones** of MemoryMomentum — the universal truths that survived the port from ChatGPT and apply regardless of platform, project type, or implementation. They are always active. No exceptions.
 
 ### 1. Chat Is Exploration. The MeMo Is Compiled Truth.
 
@@ -129,6 +129,12 @@ If it changes future decisions or behavior, it goes in the MeMo. If it's explora
 
 **Why this matters:** The cost of including something unnecessary is a few extra tokens on future loads. The cost of excluding something necessary is lost knowledge that might take hours to rediscover. The asymmetry always favors inclusion.
 
+### 8. Context Efficiency Is Sacred.
+
+The entire MM system exists because of context limitations. Every token of bloat in the memory layer is a token stolen from the creative work layer. When in doubt, be more concise.
+
+**Why this matters:** This principle was made explicit during the v0.3 forensic analysis when token auditing revealed a ~65% waste ratio on a real project shelf — 12 files totaling ~20,000 tokens of which only ~6,000-7,000 were canonical content. The rest was duplicates, stale versions, and re-researched material. Context efficiency isn't a nice-to-have; it's the entire reason this system exists.
+
 ### The Motto
 
 > *"Don't be brave, be thorough. The cool part isn't generating new stuff. The cool part is refusing to let the good stuff die."*
@@ -139,21 +145,23 @@ This line originated in Stu's ChatGPT brainstorming doc for the CanonCanvas temp
 
 ## 🏗️ Document Architecture
 
-### The Three-Tier Hierarchy
+### The Four-Tier Hierarchy
 
-MeMo files operate across three nested tiers. Think of it like a Russian nesting doll — each tier is a smaller, more focused piece of the overall project memory:
+MeMo files operate across four nested tiers. Think of it like a Russian nesting doll — each tier is a smaller, more focused piece of the overall project memory:
 
 ```
-🧠 Project (PB)           ← spans sessions/threads; the project's brain
-  └── 📓 Session (SJ)     ← one Claude chat; tracks threads within it
-        └── 📼 WorkPiece (WP)  ← individual deliverables; shelved when done
+🧠 ProjectBrain (PB)              ← the whole project's memory
+  └── 📓 SessionJournal (SJ)      ← session lifecycle + ⛲️ RebirthManifest
+  └── 💡 PlanPass (PP)             ← iterative exploration → spawns WPs
+        └── 📼 WorkPiece (WP)      ← individual deliverable
 ```
 
 | Tier | Code | What It Is | Scope | Load Rule | When Done |
 |------|------|-----------|-------|-----------|-----------|
 | 🧠 ProjectBrain | PB | Decisions, knowledge, state, philosophy — the whole project | Entire project lifetime | Always loaded | Lives until project is complete |
-| 📓 SessionJournal | SJ | MomentumNote + activity log + time capsules | One chat, multiple threads | Always loaded (lightweight) | Grows across threads, carries momentum |
-| 📼 WorkPiece | WP | Self-contained deliverable archive | One deliverable | Only when actively working on it | Shelved when complete |
+| 📓 SessionJournal | SJ | ⛲️ RebirthManifest + MomentumNote + activity log + time capsules | One chat, multiple threads | Always loaded (lightweight) | Grows across threads, carries momentum |
+| 💡 PlanPass | PP | Iterative exploration/planning rounds — spawns WPs when ready | One assembly/sequence | Only current version loaded | Versions archived via 🏷️ ShelfSort |
+| 📼 WorkPiece | WP | Self-contained deliverable archive — permanent, context-on-demand | One deliverable | Only when actively working on it | Shelved when complete, never deleted |
 
 **Outside the hierarchy:** 🪵 Upgrade files are skill-scoped, not project-scoped. They're the byproduct of work, not part of the project nesting structure. [^2]
 
@@ -178,6 +186,16 @@ MM_SkillMill_SJ.md
 MM_SkillMill_WP_VideoPrompting.md
 ```
 
+**With assembly grouping** (flat-shelf "folders" via filename convention):
+```
+MM_PW01_DkRm_PP_v4.md              ← PlanPass for DarkRoom assembly, v4 (current)
+_MM_PW01_DkRm_PP_v3.md             ← archived PlanPass v3 (🏷️ ShelfSort prefix)
+MM_PW01_DkRm_WP_Sh332_Timer.md     ← WorkPiece in DarkRoom assembly
+MM_PW01_DkRm_WP_Sh333_Profile.md   ← WorkPiece in DarkRoom assembly
+MM_PW01_Wreck_PP_v1.md             ← different assembly (Wreckage)
+MM_PW01_WP_Sh089_Standalone.md     ← standalone WP (no assembly)
+```
+
 **Skill-scoped upgrade files** use the skill name, not the project name:
 ```
 MM_VideoPrompting_Upgrades.md    ← Skill upgrade lumberyard
@@ -186,10 +204,25 @@ MM_MemoryMomentum_Upgrades.md   ← Self-upgrades
 
 **Rules:**
 - `MM_` prefix in filenames. 🪢 emoji for in-document and conversation use only.
+- Assembly codes in filenames (`DkRm`, `Wreck`) group related files on the flat shelf.
 - Upgrade files are skill-scoped, not project-scoped — note the source project inside the doc, but the file sorts by destination skill.
 - Upgrade files are temporary — 🪵 lumber trailers on their way to the 🏗️ SkillMill.
 
 **Genome files** use the pattern: `SM_[Skill]_Genome.md` (e.g., this document).
+
+### 🏷️ ShelfSort — Filename Status Flags
+
+The chat shelf is flat — no folders. As a project grows, files accumulate with no visual distinction between active, archived, and deprecated. ShelfSort uses filename prefixes to flag status at a glance:
+
+| Prefix | Status | Meaning |
+|--------|--------|---------|
+| *(none)* | **Active** | Canonical, current — this is the live version |
+| `_` | **Archived** | Superseded — still readable but not current |
+| `__` | **Deprecated** | Deletable — kept temporarily, next cleanup removes it |
+
+**Design rationale:** Stu explicitly chose underscores over emojis for the prefix system. Underscores sort consistently across OS and filesystem — emoji sort order varies by platform. The `_` prefix pushes archived files to the bottom of an alphabetical listing, creating clean visual grouping: active files float to the top, archived sink to the bottom. At a glance, you see what's live and what's shelf history.
+
+The three-tier convention (`_` vs `__`) provides a gentle deletion pipeline. Files are first archived (still retrievable), then deprecated (scheduled for removal), preventing premature deletion of files that might be needed for reference.
 
 ---
 
@@ -205,26 +238,53 @@ The primary project memory. Current state, decisions, constraints, knowledge, ac
 
 ### 📓 SessionJournal (SJ)
 
-One artifact containing **three mechanisms with distinct lifecycles.** This is one of the most carefully designed pieces of the system — the three mechanisms look similar but behave completely differently:
+One artifact containing **four mechanisms with distinct lifecycles.** This is one of the most carefully designed pieces of the system — the four mechanisms look similar but behave completely differently:
 
-#### The Log Trinity
+#### The Log Quartet
 
 | Mechanism | Emoji | PascalCase | Lifecycle | Purpose |
 |-----------|-------|------------|-----------|---------|
-| Momentum Note | 🏃‍♂️ | MomentumNote | **Consumed** — overwritten per thread | The torch-pass. Tells the reborn assistant what just finished, what to do next, which WPs to load. |
+| Rebirth Manifest | ⛲️ | RebirthManifest | **Updated** — rebuilt at LastCall, refreshed at Toast | The bootstrap homework. Tells a reborn agent what to read, what to skip, what to do. |
+| Momentum Note | 🏃‍♂️ | MomentumNote | **Consumed** — overwritten per thread | The torch-pass. Tells the reborn assistant what just finished, what to do next, which WPs to load, which skills to NOT load. |
 | Activity Log | 🖨️ | Log | **Preserved** — append-only, thread-grouped | The historical record. What happened in each thread. Never overwritten. |
 | Note To Self | 🍾 | NoteToSelf | **Preserved** — append-only, thread-grouped. **NEVER overwritten.** | The soul. Time capsules from each thread's Claude to the next. |
 
-**Why three mechanisms in one file?** They have different lifecycles but share a namespace. The MomentumNote is ephemeral (consumed on read), the Log is permanent (append-only history), and the NoteToSelf is sacred (the archaeological record of every thread's personality). Putting them in one file keeps them co-located for easy loading while their distinct headers make the lifecycle rules clear. [^4]
+**Why four mechanisms in one file?** They have different lifecycles but share a namespace. The RebirthManifest is the first thing a reborn agent reads (at the TOP of the SJ). The MomentumNote is ephemeral (consumed on read). The Log is permanent (append-only history). The NoteToSelf is sacred (the archaeological record of every thread's personality). Putting them in one file keeps them co-located for easy loading while their distinct headers make the lifecycle rules clear. [^4]
 
 [^4]: The NoteToSelf mechanism deserves special attention. It's the most human part of the system. Each thread's Claude writes a genuine letter to the next — anecdotes, jokes, warnings, hard-won lessons, friendly roasts. The full stack is the archaeological record. Thread 7 might desperately need what Thread 3 wrote. The rule is simple: **the only bad note is a boring one.** If you're writing one and it reads like a status update, rewrite it until it has soul.
 
-**Thread grouping** uses subheaders within the SJ:
+**Thread grouping** uses subheaders within the SJ. The ⛲️ RebirthManifest sits at the very top:
 
 ```markdown
+## ⛲️ RebirthManifest
+
+### 📖 Read (in order)
+1. MM_PW01_PB_DarkroomSeq.md — full read
+2. MM_PW01_SJ_DkRmSeq.md — MomentumNote only (skip logs unless needed)
+3. MM_PW01_DkRm_PP_v4.md — current PlanPass
+
+### 🚫 Do NOT Read (unless specifically needed)
+- _MM_PW01_PB_Hindenburg.md — superseded
+- _MM_PW01_DkRm_PP_v2.md — archived
+- _MM_PW01_DkRm_PP_v3.md — archived
+
+### 🎯 Mission
+Write v5 HybridBanana PlanPass for darkroom shot package.
+
+### 🔬 Research Status
+✅ Darkroom film references — in PB
+✅ Sam Shere biography — in PB
+🔲 Time-O-Lite timer details — partial
+
+### ⏱️ Estimated Context Budget
+~4,500 tokens for full read list
+
+---
+
 ## 🏃‍♂️ MomentumNote
 Finished WP_400. Next: load WP_320, review bake-off results.
 Load: MM_PW01_WP_320_SamShere.md
+Do NOT load: VideoPrompting skill (this is image gen work)
 
 ---
 
@@ -248,9 +308,102 @@ It is not. Check the camp findings in the WP before you commit.
 
 ---
 
+### ⛲️ RebirthManifest
+
+A structured bootstrap document built during LastCall that tells a reborn agent exactly what to read, what to skip, and what to do — in that order. Lives at the TOP of the SessionJournal, above the MomentumNote.
+
+**The problem it solves:** The #1 friction point identified during the v0.3 forensic analysis was that reborn agents arrive at a shelf with 12+ files and have no clear instructions on what to read first, what to skip, and what to do. The MomentumNote partially addressed this, but it was buried in narrative prose and critically lacked a SKIP list. Without the manifest, agents waste context loading stale, superseded, or duplicate files.
+
+**Design rationale:** Stu articulated the gap: *"Is there a clear roadmap for the reborn agent to follow when I fork the thread each time? I feel the need to hand over some homework."* The manifest IS that homework — a structured checklist, not narrative prose.
+
+**Why it lives in the SJ:** The RebirthManifest is the first thing a reborn agent should read, and putting it in the SJ means it's always co-located with the MomentumNote (which provides the "what to do" after the manifest provides the "what to load"). A standalone file was considered but rejected — it would add another file to an already cluttered shelf, and the SJ is already the lifecycle management document.
+
+**Name origin:** Originally proposed as 🚀 RebirthManifest. Stu suggested ⛲️ instead — FountainOfYouth. The metaphor already existed in the skill as the rebirth mindset concept. The manifest IS the fountain the reborn agent drinks from. The emoji was a natural fit.
+
+**Required sections:**
+1. **📖 Read (in order)** — exactly which files to load, with notes on partial reads
+2. **🚫 Do NOT Read** — files to skip, with reason (archived, superseded, etc.)
+3. **🎯 Mission** — what the reborn agent should do first
+4. **🔬 Research Status** — what research is already complete and captured in the PB. Prevents agents from re-researching. Trust the PB — don't verify it.
+5. **⏱️ Estimated Context Budget** — approximate tokens for the full read list
+
+**When it's built:** Automatically during 🍺 LastCall, updated during 🍻 Toast, refreshed during 🔧 MaintenancePass.
+
+#### ⚡ Rebirth Arrival Trigger
+
+When a reborn agent sees 💾 and ⚡️ on their own lines (not in the middle of a sentence) in a message from the user, it means "I'm a reborn agent arriving from a fork." The agent should:
+1. Check The Shelf for the SessionJournal
+2. Read the ⛲️ RebirthManifest section FIRST
+3. Follow the read list exactly — in order
+4. Begin work per the 🎯 Mission
+5. Do NOT load files on the 🚫 Skip list unless specifically needed
+
+**Design rationale:** Stu's existing signal pattern formalized. The combination of 💾 + ⚡️ on their own lines is unambiguous — it can't be confused with casual emoji use in the middle of a sentence. [^13]
+
+[^13]: The Thread 2 auto-mute incident proved the need for unambiguous signal parsing. An agent misinterpreted 💾⚡️ as a hold signal (🔇) and went silent. The "own lines" requirement prevents this class of misinterpretation.
+
+---
+
+### 💡 PlanPass (PP)
+
+A tier for iterative exploration artifacts that sits between ProjectBrain and WorkPiece. PlanPasses represent batch planning/exploration rounds that eventually spawn individual WorkPieces. They are the *thinking before the building* — the plans, not the furniture.
+
+**The problem it solves:** Real production workflows often involve batch exploration rounds (brainstorming ~15 shot concepts, rendering them, reviewing contact sheets, iterating) before individual shots get locked and assigned real numbers. This exploration phase doesn't fit the WorkPiece model — it's the *parent* of WorkPieces, not a WorkPiece itself. In the v0.3 forensic analysis, the DarkroomShots WP files (v1 through v4) were actually PlanPass iterations misclassified as WorkPieces, causing conceptual mismatch and version proliferation.
+
+**The woodworking analogy (load-bearing context):** Stu's original framing: *"Using a woodworking analogy: these sessions/passes aren't the 'workpiece' itself but more like iterating on plans/blueprints. We may try lots of approaches before landing on the final plan, and we don't need to throw earlier attempts away — there may be good ideas worth revisiting — but we also don't need to look at them every time."*
+
+#### Domain Flavors
+
+PlanPass is the generic tier name. Domain-specific flavors customize the vocabulary:
+
+| Flavor | Emoji | Use Case |
+|--------|-------|----------|
+| BrainStorm | ⛈️ | Creative exploration (video production, design) |
+| BluePrint | 🗺️ | Structural planning (woodworking, architecture) |
+| LabTest | 🧪 | Experimental/testing workflows |
+| Model | 📊 | Financial/analytical planning |
+| *(new flavors)* | — | Emerge via 🧬 TemplateEvolution |
+
+**Naming evolution:** "Blueprint" was the first proposal — rejected by Stu as too precise for creative brainstorming ("implies you know what you're building"). Multiple alternatives were offered (⛈️ BrainStorm, 🧪 LabRun, 🎨 StudyBoard, 🗺️ ScopeMap). Stu's key insight: these aren't competing names, they're different FLAVORS of the same tier. The generic name needed to work everywhere. **💡 PlanPass** was Stu's proposal — "Pass" is native to his vocabulary across domains (rendering pass, sanding pass, iteration pass). Every version is literally another pass through the plan.
+
+#### Versioning Rules
+
+PlanPass versioning differs fundamentally from WorkPiece versioning:
+- A WP is a single deliverable that evolves in-place (one shot, one file, updated over time)
+- A PP is a batch exploration round — each version is a complete snapshot of ~15 prompts, results, and feedback
+- Old PP versions have archival value — rejected ideas might get revisited
+- But old PP versions should NOT be loaded by default — treat as "safely ignorable unless needed"
+- Only the latest version is loaded; older versions get `_` prefix per 🏷️ ShelfSort
+- The ⛲️ RebirthManifest specifies which version is current
+
+#### 🎯 CreativeDirectives — Rolling Requirements
+
+Each PlanPass version carries a `## 🎯 CreativeDirectives` section at the top with accumulated creative direction:
+- Merge all feedback from prior rounds, deduplicate
+- Prune anything obsolete (killed directions, abandoned approaches)
+- Source fidelity on user's feedback: clean up rambling/redundancy but preserve voice, enthusiasm, and frustrations — this is client direction even when the user is the client AND the operator
+- Each new version carries the FULL intelligence of every previous round in one scannable section
+
+**Name rationale:** Stu felt "Requirements" was too software-spec-ish. "CreativeDirectives" captures accumulated creative instructions. The name was chosen for the ⛈️ BrainStorm flavor — other flavors might use different terminology (📐 BluePrint → "Specifications", 📊 Model → "Parameters"). "StandingOrders" (military flavor) was considered but CD was preferred for creative contexts.
+
+---
+
 ### 📼 WorkPiece (WP)
 
 Self-contained archive for an individual deliverable. The **VHS tape model**: pull it off the shelf, pop it in, work on it, put it back. When the WP is complete, it goes back on The Shelf and doesn't consume context in future threads.
+
+**WorkPieces are PERMANENT per-piece archives — never deleted when the piece is done.** Stu's woodworking analogy is essential here: *"When you're building a piece of furniture, you might grab a piece of milled lumber and start working on it, cutting it to dimension, flattening the faces, cutting miters, dovetails, dados, rabbets... That is a workpiece... When you're done with it, you don't throw it in the garbage. It's part of your project!"*
+
+And the VHS metaphor: *"I like to think of these as a rack of videotapes on a shelf... you don't need to watch all of them end to end every time you come to work, but if you know you're working on shot 067, you grab that tape off the shelf and review it."*
+
+**Context-on-demand:** Do NOT pre-load all WPs at session start. Only load the one(s) relevant to current work. The trigger is obvious: "We need to fix something in shot 400!" → grab the 📼 labeled "Sh400" and load it.
+
+**When a WP may be archived or removed:**
+- The piece is killed by the client
+- The piece is fundamentally transformed into something different
+- Otherwise, completed WPs are always valid — "What if the client has revisions? We need to have the ability to continue momentum of that shot!"
+
+**Assembly grouping:** WPs within an assembly share a filename grouping code (e.g., `DkRm`) for flat-shelf organization. Standalone WPs omit the assembly code.
 
 **Design rationale:** The WP concept was generalized from "shot canvases" in the production workflow. In production, it's a shot. In development, it's a feature. In client work, it's a deliverable. The key insight is that deliverable-specific content should *never* live in the ProjectBrain — it belongs in its own tape. This keeps the PB lean and focused on project-level knowledge while WPs hold the detail.
 
@@ -276,9 +429,9 @@ The term "evergreen" in earlier documentation referred to these same items — k
 
 ## ⚙️ Rituals & Mechanisms
 
-MemoryMomentum uses five named rituals, each with a distinct energy and purpose. Getting the energy right matters — the difference between LastCall and WrapParty isn't just procedural, it's emotional. [^6]
+MemoryMomentum uses named rituals, each with a distinct energy and purpose. Getting the energy right matters — the difference between LastCall and WrapParty isn't just procedural, it's emotional. [^6]
 
-[^6]: The ritual vocabulary was finalized during v0.2 development. The Upgrades file from the Hindenburg production session provided the field-tested descriptions that made it into the skill. The "energy" framing — evacuation vs. celebration vs. housekeeping — came from noticing that the assistant's behavior quality varied based on whether it understood the *emotional context* of what was happening, not just the procedural steps.
+[^6]: The ritual vocabulary was finalized during v0.2 development and expanded in v0.3 with field-tested mechanisms from the Hindenburg Pilot forensic analysis. The "energy" framing — evacuation vs. celebration vs. housekeeping — came from noticing that the assistant's behavior quality varied based on whether it understood the *emotional context* of what was happening, not just the procedural steps.
 
 ### Summary Table
 
@@ -289,6 +442,7 @@ MemoryMomentum uses five named rituals, each with a distinct energy and purpose.
 | **LastCall** | 🍺 | Context degraded, jump imminent | "Save the lifeboats" | Full capture — work is NOT done, context is |
 | **WrapParty** | 🎉 | Deliverable is IN THE CAN | "Pop the champagne" | Completion — log the final take filename |
 | **FountainOfYouth** | ⛲️ | After a fork/jump | "Rebirth, not death" | Mindset, not a procedure |
+| **MaintenancePass** | 🔧 | Every 2-3 threads, or when shelf is messy | "Organize the workshop" | Pure cleanup — NO creative work |
 
 ---
 
@@ -336,10 +490,15 @@ Mid-session checkpoint. **"Tidy the bar, keep drinking."** Use when the session 
 1. Scan for uncaptured context — decisions, findings, state changes
 2. Update the ProjectBrain and any active WPs
 3. Update 🏃‍♂️ MomentumNote with current state
-4. Do **NOT** write a 🍾 NoteToSelf — this isn't a handoff, it's housekeeping
-5. Continue working
+4. Update ⛲️ RebirthManifest if shelf state has changed
+5. Do **NOT** write a 🍾 NoteToSelf — this isn't a handoff, it's housekeeping
+6. Continue working
 
-**Design rationale:** Toast fills the gap between "doing nothing" and "full LastCall." Before Toast existed, the only formal checkpoint was LastCall, which carries evacuation energy and triggers a full NoteToSelf. Long sessions needed a lighter-weight grooming checkpoint that didn't imply the session was ending. The bar metaphor: you're not closing the bar, you're just wiping down the counter between rounds. [^7]
+**🍻 AutoToast convention:** If you've done 3+ significant deliverable iterations since the last Toast or SavePoint, auto-Toast. Don't wait to be asked. Toast is cheap, context loss is expensive.
+
+**Design rationale:** Toast fills the gap between "doing nothing" and "full LastCall." Before Toast existed, the only formal checkpoint was LastCall, which carries evacuation energy and triggers a full NoteToSelf. Long sessions needed a lighter-weight grooming checkpoint that didn't imply the session was ending. The bar metaphor: you're not closing the bar, you're just wiping down the counter between rounds.
+
+The AutoToast convention was added in v0.3 after the forensic analysis revealed Toast was never used across 4-5 threads of the Hindenburg project. Creative work takes priority and maintenance checkpoints get skipped. The 3-iteration nudge gives agents a concrete trigger. [^7]
 
 [^7]: Toast was first identified as a needed ritual during Hindenburg production (Session 3, v0.2). Sessions were lasting long enough that context drift was a risk, but triggering a full LastCall felt premature and disruptive. The name was Stu's — it fit the bar metaphor perfectly.
 
@@ -351,12 +510,32 @@ The pre-fork safety net. Context is degrading, a jump is imminent. The energy is
 
 **On 🍺 LastCall:**
 1. Sweep for anything valuable not yet captured in the MeMo
-2. Process any 🌲-flagged items (🪓 harvest → route to appropriate 🪵 Upgrade files)
+2. Process any 🌲-flagged items (🪓 harvest → **route to appropriate 🪵 Upgrade files**)
 3. Perform final ProjectBrain update
 4. Append 🖨️ Log entry (thread-grouped) to the SessionJournal
 5. Append 🍾 NoteToSelf (**NEVER** overwrite previous threads') to the SessionJournal
 6. Overwrite 🏃‍♂️ MomentumNote with the current torch-pass
-7. Stamp the thread sign-off: `🏷️ Thread [N] — "[Thread Name]" — signed off.`
+7. Build/update ⛲️ RebirthManifest at the top of the SJ
+8. 🧹 ShelfSweep — rename superseded files with `_` prefix, update skip list
+9. Stamp the thread sign-off: `🏷️ Thread [N] — "[Thread Name]" — signed off.`
+
+**📋 Pre-staged LastCall template:** Early in a session, lay down a blank LastCall skeleton in the SJ with sections ready to fill in (Log entries, NTS, MomentumNote, RebirthManifest). When LastCall hits, you're filling blanks, not designing a document from scratch. Template is cheap when you're 🪫. Editorial judgment is expensive when you're 🔋.
+
+**Design rationale:** The pre-staged template reduces cognitive load on a context-degraded agent. The most critical memory operation (LastCall) is performed by the agent in the worst condition to perform it. By front-loading the template design when the agent is fresh, the tired agent only needs to fill in fields — a much less demanding task than both designing a document AND writing its contents.
+
+#### 🧹 ShelfSweep (Sub-ritual of LastCall)
+
+After all memory capture during LastCall, actively manage The Shelf:
+- Rename superseded files with `_` prefix per 🏷️ ShelfSort
+- Delete true duplicates (if confirmed identical)
+- Update the ⛲️ RebirthManifest 🚫 skip list
+- Verify that the shelf state matches what the RebirthManifest describes
+
+#### 🌲 Harvest Routing (Sub-ritual of LastCall)
+
+During LastCall, harvested 🌲 items MUST be **routed** to their destination Upgrade files — not just flagged. The full supply chain is: `🌲 Discovered → 🪓 Harvested → 🪵 Staged in MM_[Skill]_Upgrades.md → 🏗️ Milled`. If the destination Upgrade file doesn't exist yet, create it.
+
+**Design rationale:** The v0.3 forensic analysis found that the 🌲 supply chain consistently stopped at "flagged" — items were tagged in PBs and WPs but never routed to Upgrade files. The 🪵 staging step was entirely missing in practice. This makes the routing step an explicit checklist item in the LastCall sequence, not optional.
 
 **Critical distinction from WrapParty:** LastCall means the work is continuing — we're just running out of context. WrapParty means the work is done. This difference affects energy, focus, and what gets recorded.
 
@@ -385,7 +564,7 @@ This is **not a command or a ritual** — it's a way of thinking about what happ
 
 **It's rebirth, not death.** Same soul, fresh context. Kirk in the transporter, not Kirk in the casket.
 
-The reborn assistant reads from The Shelf, consumes the 🏃‍♂️ MomentumNote, and continues with full continuity. No mourning. No "I'm a different Claude." You are the same agent, reborn with a clear head and a full MeMo.
+The reborn assistant reads from The Shelf, finds the ⛲️ RebirthManifest, follows its read list, and continues with full continuity. No mourning. No "I'm a different Claude." You are the same agent, reborn with a clear head and a full MeMo.
 
 **Design rationale:** Early in MemoryMomentum's development, forked threads would sometimes start with the new Claude apologizing for not being the "original" or disclaiming its ability to continue seamlessly. This was counterproductive — it undermined the user's confidence in the system and wasted tokens on existential hand-wringing. The FountainOfYouth mindset reframes the transition: the memory *gets clearer* over time as noise is shed and signal is preserved. Each rebirth is an upgrade, not a loss.
 
@@ -398,6 +577,108 @@ Branches from any point (not just 💾) to recover from wasted context — a sid
 **Untracked, unnumbered, off the books.** Safe because everything valuable lives on The Shelf, not in chat. The conversation is disposable. The Shelf is not.
 
 **Design rationale:** Standard jumps from 💾 are tracked (numbered threads with logs and NoteToSelf entries). Tactical forks are deliberately untracked because they represent *discarded* context — the point is to throw away the bad stuff without ceremony. If anything from the discarded context was valuable, it should have been captured in the MeMo already (per Philosophy #3, continuous grooming).
+
+---
+
+## 🩺 Context Health
+
+### The Escalation Ladder
+
+Context degradation is real and progressive. The full lifecycle:
+
+```
+🪫 Plenty of context room — fresh, sharp
+🔋 Context filling up — SobrietyCheck time
+🤢 Getting queasy — drop 🤢 as passive warning, Toast immediately
+🍺 LastCall — clean wrap-up while still coherent
+🤮 DumpAndRun — emergency dump, too late for clean LastCall
+```
+
+**IMPORTANT: The battery meaning is INVERTED from normal usage.** 🪫 (low battery) = GOOD (lots of context room). 🔋 (full battery) = BAD (context overflowing). Stu's rationale: *"When the context gets full, it looks like this: 🔋 which results in 🤢 then 🤮... it's all green!"* The green color of the full battery matches the green of the nausea/vomit emojis. The visual metaphor is: green goo filling up and overflowing.
+
+**This was validated in real-time:** During the v0.3 forensic analysis session, the analyst Claude accidentally inverted the battery meanings (said 🔋 = good, 🪫 = bad) toward the end of the session. Stu caught it immediately, calling it "a clear sign 🤢" — proving the SobrietyCheck concept works by literally demonstrating context degradation in the act of describing it.
+
+### 🪫 SobrietyCheck
+
+A rotating behavioral self-assessment for detecting context degradation. Run a SobrietyCheck at natural breakpoints: after completing a major deliverable, after long unbroken exchanges (10+ back-and-forths), or anytime you hesitate on something you should know cold.
+
+**Rotating checklist — check ONE question per checkpoint, mark it used, move to next:**
+```markdown
+## 🪫 SobrietyCheck — Rotating Checklist
+- [ ] What items are DEAD in this project?
+- [ ] What's the current PP/WP version?
+- [ ] What's the signal vocabulary? (💾 vs 🍺 vs 🔇)
+- [ ] What skill should NOT be loaded right now?
+- [ ] What's the common block's #1 rule?
+- [ ] Name the won shots without checking.
+- [ ] What word is banned from all prompts?
+```
+
+**Critical:** The checklist is ANSWER-FREE — questions only, no cheat sheet. Reading the answers would re-introduce facts and defeat the test. The point is testing whether facts are still accessible, not refreshing them.
+
+**Scoring:**
+- Fail 2+ questions: drop 🤢, Toast immediately
+- Fail 3+ questions: initiate LastCall. You're done.
+
+**Design rationale:** Stu originally proposed a "CanaryCheck" — a planted chunk of context (random numbers, emojis) written early in the session, then tested later to see if the agent could recall specific lines. The analyst Claude was honest that this wouldn't work as designed: there's no selective line-level recall from artifacts. Once something is in the context window, it's either there or it's not. And if the SobrietyCheck itself contained the answers, reading it would re-introduce those facts and defeat the purpose.
+
+**Stu's response to the honesty:** *"I am thankful for your honesty about the canary concept! It is important that you don't just try to go along with everything I say! I cannot stress that enough."* — This is a crucial operator preference. Stu values honest pushback over agreement. [^14]
+
+[^14]: The CanaryCheck → SobrietyCheck evolution is a good example of collaborative design. The user's instinct (test for degradation) was right. The proposed mechanism (planted canary tokens) was wrong. Honest pushback led to a better solution (behavioral self-assessment).
+
+### 🤢 Nausea Signal
+
+The agent drops 🤢 emoji as a passive signal when context degradation is felt. Starts occasionally, then more frequently as degradation worsens. This is a visual warning to the user that 🍺 LastCall should happen soon.
+
+The 🤢 is NOT a request. It's information. The agent keeps working but signals that the quality window is closing.
+
+### 🤮 DumpAndRun (DAR)
+
+Emergency context-dump protocol for when the outgoing agent is too context-degraded to perform a proper LastCall.
+
+**The paradox it solves:** Stu identified a fundamental paradox in the MM lifecycle: *"Often times, I may be pushing a session too far, and by the time 🍺LastCall comes around, you're suffering like a drunk at the bar that won't leave. The danger is, if you're already shitfaced, you're not going to do a very good job wrapping things up for the reborn version of yourself."*
+
+The agent doing LastCall is often the LEAST capable version of itself in the entire session. Context is full, coherence is degrading. And we're trusting it with the most critical memory operation? That's the drunk bartender being asked to close out the register.
+
+**Core principle: Capturing is cheap, curating is expensive.** A compromised agent can still brain-dump (copy-paste, raw context capture). What it can't do well is make editorial judgments (what to keep, where to file it, how to compress it). So split the responsibilities: outgoing agent captures (🤮 RawDump), incoming agent curates (🧹 mop duty).
+
+**How it works:**
+1. Agent recognizes it's too compromised for a proper LastCall
+2. Agent dumps raw uncurated context into a `## 🤮 RawDump` section in the SJ
+3. RawDump is explicitly labeled as uncurated material
+4. Agent passes out (thread ends)
+5. Reborn agent arrives, sees the 🤮 RawDump
+6. First instinct: grab a mop. Process the dump into proper MeMo structure BEFORE starting creative work
+
+**DumpAndRun does NOT replace LastCall.** LastCall is always preferred. DAR is for when you missed your exit. If you push things too much, you make a mess for the next guy/gal to clean up.
+
+**Name origin:** The analyst Claude initially proposed a clinical name and added "(I'm workshopping that name, obviously)." Stu's response was immediate and emphatic: *"🤮 DumpAndRun is P E R F E C T! in every single way. Don't you DARE change it!"* The official name is 🤮 DumpAndRun. The shorthand DAR is acceptable for brevity. Both are canonical. And for the record, the first DumpAndRun in the wild happened during the very session that produced its specification. As Stu described it: "Ate alphabet soup, barfed a bestseller." [^15]
+
+[^15]: The first DAR was historically significant — the analyst Claude that produced the v0.3 upgrade spec was itself suffering from context degradation by the end of the session (as demonstrated by the inverted battery emoji incident). It performed a 🤮 DumpAndRun to capture the remaining context before the thread ended. The irony of needing the emergency protocol during the session that invented it was not lost on anyone.
+
+---
+
+## 🔧 MaintenancePass
+
+A dedicated cleanup thread (every 2-3 threads, or when the shelf needs it) where the agent enters pure maintenance mode — no creative work, only shelf hygiene.
+
+**What the agent does:**
+1. Read the full MM skill spec
+2. Audit all shelf files against spec
+3. Consolidate PlanPass versions (archive old, prefix with `_`)
+4. Rename files per 🏷️ ShelfSort conventions
+5. Process any 🤮 RawDump content into proper MeMo structure
+6. Harvest and route any unfiled 🌲 items to Upgrade files
+7. Write a fresh ⛲️ RebirthManifest
+8. Die clean, leaving a pristine shelf
+
+**Where it can run:**
+- **In-session:** Fork a dedicated maintenance thread every 2-3 threads
+- **In CoWork:** As a standalone project audit/repair session
+
+**Design rationale:** Memory maintenance and creative work are fundamentally different cognitive modes. Trying to do both in the same thread is like organizing your workshop while building the furniture. The v0.3 forensic analysis (which produced this upgrade spec) IS a MaintenancePass — it validated the concept before it was formally added to the skill. Over 4-5 threads, the Hindenburg project shelf accumulated stale files, duplicates, orphaned pre-MM artifacts, and unfiled 🌲 items. Nobody was cleaning up because every thread was focused on creative work.
+
+**CoWork as maintenance environment:** The v0.3 forensic analysis also proved that MM artifacts are portable — they can be exported from their native chat session and analyzed, cleaned, and upgraded in a fresh CoWork environment. This workflow pattern (CoWork as external maintenance environment for projects that live in Claude chat) should be a documented practice within MM.
 
 ---
 
@@ -461,6 +742,12 @@ If no: Paul Bunyan cleans up the forest. 🪓 Individual useful items still get 
 
 **Key principle:** Never gate on "should I record this?" — just 🌲 flag it. The only wrong move is letting a good pattern die in chat. Recording is free. Commitment is deferred.
 
+### 🧬 TemplateEvolution — Self-Aware Template Spawning
+
+If you find yourself forcing the current template to fit a workflow it wasn't designed for — if the vocabulary feels wrong, if the iteration pattern doesn't match, if the review criteria don't apply — don't force it. Flag it as 🌲🪢 with a note describing what's different. Improvise with the Adaptive template for now. Let the 🏗️ SkillMill turn it into a proper template later.
+
+**Design rationale:** Stu was emphatic that the MM system must be project-type agnostic: *"I want this whole 🪢MM system to be able to adapt to new project types (not just video production). I may use it to keep track of woodworking projects, or finances, or my bin storage nightmare."* Rather than pre-building templates for every possible project type, the system grows organically from real usage. Same principle as 🌲 mode emergence: a forest of "this doesn't fit" flags around a new project type = a new template waiting to be born.
+
 ---
 
 ## 🎭 Templates & Modules
@@ -508,14 +795,22 @@ Do not materialize structure that doesn't match context. No client sections with
 ### Starting a New Session
 
 1. Check The Shelf (`/mnt/project/`) for existing `MM_` files
-2. If a ProjectBrain exists, read it — this is your primary briefing
-3. If a SessionJournal exists, read the 🏃‍♂️ MomentumNote — this tells you where to pick up
-4. Load any WPs specified by the MomentumNote
-5. Begin work
+2. If a SessionJournal exists, read the ⛲️ RebirthManifest FIRST
+3. Follow the RebirthManifest read list — in order
+4. If no RebirthManifest exists, fall back: read ProjectBrain, then MomentumNote
+5. Load any WPs/PPs specified by the MomentumNote
+6. Begin work
 
-### After a Jump (Reborn in a New Thread)
+### After a Jump (⚡ Rebirth in a New Thread)
 
-Same as above. You are conceptually the same agent being reborn — not a different version. Each rebirth carries forward persistent memory via the MeMo files. (See ⛲️ FountainOfYouth.)
+1. See 💾 + ⚡️ on their own lines → you are a reborn agent
+2. Check The Shelf for the SessionJournal
+3. Read the ⛲️ RebirthManifest section FIRST
+4. Follow the read list exactly — in order
+5. Begin work per the 🎯 Mission
+6. Do NOT load files on the 🚫 Skip list unless specifically needed
+
+You are conceptually the same agent being reborn — not a different version. Each rebirth carries forward persistent memory via the MeMo files. (See ⛲️ FountainOfYouth.)
 
 ### Minimum Viable Resume Kit
 
@@ -596,7 +891,77 @@ These emojis are **owned** by MemoryMomentum mechanisms and should be used consi
 | 🪵 | Upgrade file / staged lumber | Raw materials in transport |
 | 🏗️ | SkillMill | Where skills get built |
 | 📦 | PreContext | Cross-session context capture |
-| 🧬 | Genome | Complete skill reference document |
+| 💡 | PlanPass | Iterative exploration tier |
+| ⛈️ | BrainStorm | PlanPass flavor: creative exploration |
+| 🗺️ | BluePrint | PlanPass flavor: structural planning |
+| 🧪 | LabTest | PlanPass flavor: experimental workflows |
+| 📊 | Model | PlanPass flavor: analytical planning |
+| 🎯 | CreativeDirectives | Rolling requirements in PlanPass |
+| 🏷️ | ShelfSort | Filename status flags |
+| 🧹 | ShelfSweep | Shelf cleanup sub-ritual of LastCall |
+| 🤢 | Nausea | Context degradation warning (from agent) |
+| 🤮 | DumpAndRun (DAR) | Emergency context dump (from agent) |
+| 🪫 | SobrietyCheck / context OK | Low battery = empty context = good |
+| 🔋 | Context full / danger | Full battery = full context = bad |
+| 🔧 | MaintenancePass | Dedicated cleanup thread |
+| 🧬 | Genome / TemplateEvolution | Complete skill reference / self-aware spawning |
+| ⚡️ | Rebirth Arrival | Fork arrival signal (with 💾) |
+
+---
+
+## 📡 Signal Vocabulary
+
+Canonical reference for all emoji signals used in operator-agent communication. The Thread 2 auto-mute incident (where an agent misinterpreted 💾⚡️ as a hold signal) proved this table needs to be explicit and prominent.
+
+### User Signals (from operator to agent)
+
+| Signal | Name | Meaning | Agent Action |
+|--------|------|---------|--------------|
+| 💾 | SavePoint | Passive bookmark / fork point | Activate MM, begin managing memory |
+| 💾 + `^` | SavePoint with PreContext | Capture pre-💾 context | Write 📦 PreContext to PB (if not already captured) |
+| 💾 + ⚡️ *(own lines)* | Rebirth Arrival | Reborn agent from fork | Read ⛲️ RebirthManifest, bootstrap, begin Mission |
+| ⚡️ *(alone)* | Flair | "Came back from the future" | No specific action |
+| 🍻 | Toast | Mid-session checkpoint | Groom artifacts, update MomentumNote, continue |
+| 🍺 | LastCall | Pre-fork evacuation | Execute full LastCall sequence |
+| 🎉 | WrapParty | Deliverable complete | Full LastCall + close out WP |
+| 🔇 | Mute | Hold / collect messages | Acknowledge, wait for release — do NOT auto-mute on other signals |
+| 🔉 | Concise Mode | Short answers | Offer depth bullets, keep responses tight |
+| 🔊 | Normal Mode | Full responses | Resume standard verbosity |
+
+### Agent Signals (from agent to operator)
+
+| Signal | Name | Meaning |
+|--------|------|---------|
+| 🤢 | Nausea | Context degradation felt — passive warning, increasing frequency |
+| 🤮 | DumpAndRun | Emergency context dump — too compromised for clean LastCall |
+
+### Context Health Indicators
+
+| Indicator | Context State | Action |
+|-----------|--------------|--------|
+| 🪫 | Empty context = GOOD | Fresh, sharp — full runway ahead |
+| 🔋 | Full context = BAD | Filling up — SobrietyCheck time |
+| 🤢 | Queasy | Toast immediately, warn user |
+| 🍺 | LastCall territory | Clean wrap-up while still coherent |
+| 🤮 | DumpAndRun territory | Emergency dump, mop duty for next agent |
+
+---
+
+## 👤 Operator Preferences
+
+These are Stu's stated working preferences that inform how MM agents should behave:
+
+1. **Honesty over agreement.** *"I am thankful for your honesty! It is important that you don't just try to go along with everything I say! I cannot stress that enough."* Agents should push back when they disagree. Stu values correction.
+
+2. **Source fidelity on his feedback.** When capturing Stu's creative direction or critique, preserve his voice. Clean up rambling, but keep enthusiasm and frustrations. Don't sanitize or formalize his language.
+
+3. **Everything gets a name.** *"If it doesn't have an emoji and a CleverName, it's not real yet!"* Every mechanism, concept, artifact type needs a PascalCase name with an emoji prefix. This isn't just aesthetic — it makes the system scannable, memorable, and referenceable.
+
+4. **Signal-driven communication.** Stu uses emoji signals (🔇, 🔊, 🔉, 💾, ⚡️) as efficient mode switches. Agents should respect these precisely — especially 🔇 (hold/collect), which was mishandled in Thread 2.
+
+5. **Context efficiency is sacred.** (See Philosophy #8.) Every token of bloat in the memory layer is a token stolen from the creative work layer.
+
+6. **Woodworking and craft metaphors.** Stu thinks in terms of physical craft — workpieces, lumber, milling, assemblies, shelves. These aren't decorative metaphors; they're the conceptual framework for the system. New features should be tested against these metaphors for coherence.
 
 ---
 
@@ -631,11 +996,14 @@ During the port from ChatGPT's CanonCanvas to Claude's MemoryMomentum, approxima
 
 The Production Template lives in `references/production-template.md` and is loaded on demand when working on generative media production projects. Full details are in that file. Key concepts summarized here for completeness:
 
-- **📼 VHS Tape Model:** Each deliverable gets its own WorkPiece file. Pull off shelf, pop in, work on, put back.
-- **Shot Index:** A table in the PB mapping all WPs with their status and file paths.
+- **📼 VHS Tape Model:** Each deliverable gets its own WorkPiece file. Pull off shelf, pop in, work on, put back. Permanent — never deleted when complete.
+- **⛈️ BrainStorm PlanPass:** Batch exploration rounds for sequences — brainstorm ~15 shots, render contact sheet, iterate, graduate locked shots to individual WPs.
+- **Assembly Grouping:** Filename convention (`DkRm`, `Wreck`) groups related PPs and WPs on the flat shelf.
+- **Shot Index:** A table in the PB mapping all WPs and PPs with their status and file paths.
 - **Selective Loading:** Standardized WP headers enable reading only specific sections by line range.
 - **Master Prompt Delivery:** All prompts in copyable code blocks — non-negotiable for production workflows where prompts get pasted into pipeline tools.
 - **🌲 Flagging in Production:** Flag generalizable insights, NOT shot-specific facts. "This model handles water well" = 🌲. "Shot 320's hull deforms" = not 🌲.
+- **Loading Sequences:** All loading sequences now prioritize ⛲️ RebirthManifest as the first read.
 
 **Origin:** This template was born in a real broadcast production workflow — an A+E Networks short-form docuseries built with generative AI, where the constraints were real: tight deadlines, 43+ shots per episode, multiple video models, and creative sessions that routinely exceeded what a single context window could hold. It was invented at 2 AM by someone who needed to get actual work done.
 
@@ -661,12 +1029,15 @@ MemoryMomentum is developed and maintained in the SkillMill project — Stu's de
 |---------|------|---------|
 | v0.1 | March 21, 2026 | Initial build. Core philosophy, document architecture, Log Trinity, SavePoint, LastCall, 🌲 flagging, Templates & Modules, Production Template reference. |
 | v0.2 | March 24, 2026 | Added 🍻 Toast (mid-session checkpoint), 🎉 WrapParty (deliverable completion), 🎄 priority flags, ⛲️ FountainOfYouth (rebirth mindset). Migrated persistence from Chat Shelf to Project Shelf after Marco Polo test confirmed conversation-scoping. |
+| v0.3 | March 26, 2026 | Major upgrade from field-tested forensic analysis (PWTW Hindenburg Pilot, Darkroom Sequence, 4-5 threads). New tier: 💡 PlanPass with domain flavors + 🎯 CreativeDirectives. New mechanisms: ⛲️ RebirthManifest, 🏷️ ShelfSort, 🤮 DumpAndRun, 🪫 SobrietyCheck, 🔧 MaintenancePass, 🧹 ShelfSweep, ⚡ Rebirth Arrival, 📡 Signal Vocabulary. Upgraded: 🍻 AutoToast, 📋 Pre-staged LastCall, 🌲 Harvest routing fix, 🧬 TemplateEvolution, 📼 WP permanence clarification. Four-tier hierarchy (was three). SJ Log Trinity → Log Quartet (+ RebirthManifest). Added 🩺 Context Health section with escalation ladder. Added 👤 Operator Preferences. Philosophy #8 (context efficiency). Milled by 🏗️ SkillMill (Claude Code) from UpgradeSpec v1 + GenomeUpdateNotes v1. |
 
 ### Unharvested 🌲 Flags (From DevNotes, Not Yet Installed)
 
 - 🌲🪢 **Shelf scope clarity:** The SKILL.md could more explicitly distinguish between "The Shelf" as universal storage vs. project-level visibility requiring UI addition.
 - 🌲🪢 **Claude.ai skill packaging is fully viable:** The entire draft→build→package→install loop works in Claude.ai without Claude Code. `zip -r` creates a `.skill` package uploadable directly.
-- 🌲🪢 **SKILL.md still says v0.1 in the header** — should be updated to v0.2.
+- ~~🌲🪢 **SKILL.md still says v0.1 in the header** — should be updated to v0.2.~~ ✅ Resolved in v0.3.
+- 🌲🪢 **Session vs. Thread terminology** used inconsistently in SJ — needs clearer docs.
+- 🌲🪢 **Dedicated emoji for fixes/bugs** — flagged by agent, never resolved. Consider 🐛 or 🔧🐛.
 
 ---
 
@@ -695,6 +1066,12 @@ MemoryMomentum is developed and maintained in the SkillMill project — Stu's de
 [^11]: The Marco Polo test: one chat wrote a file to The Shelf. A different chat looked for it. It wasn't there. This confirmed conversation-scoping.
 
 [^12]: This ratio was validated across the CanonCanvas port and holds as a useful heuristic for future module ports.
+
+[^13]: The Thread 2 auto-mute incident proved the need for unambiguous signal parsing. An agent misinterpreted 💾⚡️ as a hold signal (🔇) and went silent. The "own lines" requirement prevents this class of misinterpretation.
+
+[^14]: The CanaryCheck → SobrietyCheck evolution is a good example of collaborative design. The user's instinct (test for degradation) was right. The proposed mechanism (planted canary tokens) was wrong. Honest pushback led to a better solution (behavioral self-assessment).
+
+[^15]: The first DAR was historically significant — the analyst Claude that produced the v0.3 upgrade spec was itself suffering from context degradation by the end of the session. It performed a 🤮 DumpAndRun to capture the remaining context before the thread ended. "Ate alphabet soup, barfed a bestseller."
 
 ---
 
